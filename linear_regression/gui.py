@@ -10,17 +10,18 @@ def createCanva(canvaY,canvaX):
     return np.zeros((canvaY,canvaX), dtype='uint8')
 #
 def mouseControl(event,x,y,flags,param):
-    global x_graph, y_graph, canva
+    global x_graph, y_graph, canva,learning_rate
     if event == cv2.EVENT_LBUTTONDOWN:
         canva[y,x,cGREEN]     = 255
         x_graph = np.append(x_graph, x)
         y_graph = np.append(y_graph, y)
+        learning_rate = learning_rate * 10
 
 def nothing(**args):
     pass
 
 try:
-    global x_graph, y_graph, canva
+    global x_graph, y_graph, canva, learning_rate
     cBLUE=0
     cGREEN=1
     cRED=2
@@ -38,7 +39,9 @@ try:
     cv2.namedWindow(WINDOWS_NAME)
     cv2.setMouseCallback(WINDOWS_NAME,mouseControl)
     
+    learning_rate = 0.001
     while True:
+        
         cv2.imshow(WINDOWS_NAME,canva)
             
         y_h = lr.hyp_func(x, theta)
@@ -48,11 +51,23 @@ try:
                 canva[int(y_h[i]),x[i], cRED] = 250
         
         if len(x_graph):
-            theta =  lr.gradient_descent(x_graph, y_graph, theta, 0.0001)
+            theta =  lr.gradient_descent(x_graph, y_graph, theta, learning_rate)
             print(lr.cost_function(lr.hyp_func(x_graph, theta), y_graph))
+            print(learning_rate)
             thetas.append(theta)
             costs.append(lr.cost_function(lr.hyp_func(x_graph, theta), y_graph))
+        
+        
+        if len(costs) >=10 and costs[-1] == max(costs[-3:]):
+            learning_rate = learning_rate / 5
+        elif len(costs) >=10 and costs[-1] == min(costs[-5:]):
+            learning_rate = learning_rate * 2 
             
+        if learning_rate <= 0.000001:
+            learning_rate = 0.000001
+#        elif len(costs) >=3 and costs[-1] <= costs[-2]:
+#            learning_rate = learning_rate * 3
+
         k = cv2.waitKey(1) & 0xFF
         if k == ord('q'):
             cv2.destroyAllWindows()

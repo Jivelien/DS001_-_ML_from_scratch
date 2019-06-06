@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-from matplotlib import pyplot as plt
 
 def init_theta(i : int):
     return np.random.rand(i)
@@ -23,6 +22,7 @@ def gradient_descent(x, y, theta, learning_rate): #learning rate : alpha
         new_theta[i] = theta[i] - learning_rate * (new_cost - cost)/0.000000001
     return new_theta
 
-def scaler(z):
-    pass
+def min_max_scaler(z):
+    return (z - np.min(z)) / (np.max(z) - np.min(z))
+    
 
