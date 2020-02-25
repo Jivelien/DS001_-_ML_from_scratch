@@ -5,6 +5,7 @@ WINDOWS_NAME : str = 'K-mean'
 WIDTH: int = 1000
 HEIGHT: int = 600
 
+c = Canva(WIDTH, HEIGHT)
 
 def mouseControl(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
@@ -25,7 +26,6 @@ def nothing(args):
 
 
 def main():
-    c = Canva(WIDTH,HEIGHT)
     cv2.namedWindow(WINDOWS_NAME)
     cv2.setMouseCallback(WINDOWS_NAME, mouseControl)
     cv2.createTrackbar('color', WINDOWS_NAME, 0, 2, nothing)
