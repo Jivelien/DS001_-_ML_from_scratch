@@ -16,5 +16,9 @@ class Canva:
         self.width = width
         self.height = height
         self.circle_size = circle_size
-        self.canvas = np.zeros((self.height, self.width, 3), dtype=np.uint8)
+        self.frame = np.zeros((self.height, self.width, 3), dtype=np.uint8)
+        self.data = []
 
+    def add_point(self,x,y,z):
+        self.frame[y-self.circle_size:y+self.circle_size,x-self.circle_size:x+self.circle_size,z] = 255
+        self.data.append((x,y,z))
