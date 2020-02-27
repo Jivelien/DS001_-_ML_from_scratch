@@ -6,8 +6,16 @@ class DistanceMatrix:
         self.distances.append(self.distance_point(distance, label))
 
     def find_nearest_label(self, k):
-        nearest = [distance_point.label for distance_point in self.distances]
-        return list(dict.fromkeys(nearest))
+        sorted(self.distances,key=lambda l:l.distance)
+
+        max = self.distances[0].distance
+        result = []
+        for distance in self.distances:
+            if distance.distance == max:
+                result.append(distance.label)
+            else:
+                break
+        return result
 
     class distance_point:
         def __init__(self,distance,label):

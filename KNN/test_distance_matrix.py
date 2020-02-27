@@ -7,7 +7,7 @@ class TestDistanceMatrix(unittest.TestCase):
 
         distance_matrix.add_distance(3.8, 'circle')
 
-        result = distance_matrix.find_nearest_label(k=3)
+        result = distance_matrix.find_nearest_label(k=1)
         expected = ['circle']
 
         self.assertEqual(result, expected)
@@ -41,6 +41,17 @@ class TestDistanceMatrix(unittest.TestCase):
 
         result = distance_matrix.find_nearest_label(k=3)
         expected = ['blue']
+
+        self.assertEqual(result, expected)
+
+    def test_find_nearest_point_between_two(self):
+        distance_matrix = DistanceMatrix()
+
+        distance_matrix.add_distance(3.8, 'red')
+        distance_matrix.add_distance(3, 'blue')
+
+        result = distance_matrix.find_nearest_label(k=1)
+        expected = ['red']
 
         self.assertEqual(result, expected)
 
