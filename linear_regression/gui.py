@@ -4,11 +4,11 @@ import numpy as np
 import cv2
 from model import linear_regression
 from dataset import dataset
-import canva
+import canvas
 
 WINDOWS_NAME = 'regression'
 d = dataset()
-c = canva.canva(1400, 800)
+c = canvas.canva(1400, 800)
 lr = linear_regression(theta_lenght=2, learning_rate=1)
 
 
@@ -45,7 +45,7 @@ while True:
     if d.number_of_points >= 2:
         lr.gradient_descent(d.get_x(), d.get_y())
 
-        cc = canva.canva(c.width, c.height, circle_size=1)
+        cc = canvas.canva(c.width, c.height, circle_size=1)
         ys = rescale(
                 lr.hyp_func(rang, lr.theta), 1, 0, 0, c.height)
         
@@ -54,7 +54,7 @@ while True:
                 cc.add_point(int(xs[i]), int(ys[i]))
                 
         img = cv2.cvtColor(c.canva.astype('uint8'), cv2.COLOR_GRAY2RGB)
-        img[:, :, canva.color.RED] = cv2.addWeighted(
+        img[:, :, canvas.color.RED] = cv2.addWeighted(
             c.canva, 1, cc.canva, 1, 0)
     else:
         img = c.canva

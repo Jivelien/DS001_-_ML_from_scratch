@@ -11,8 +11,8 @@ BLUE = 0
 GREEN = 1
 RED = 2
 
-class Canva:
-    def __init__(self, width, height, circle_size=3):
+class Canvas:
+    def __init__(self, width, height, circle_size=50):
         self.width = width
         self.height = height
         self.circle_size = circle_size
@@ -20,6 +20,10 @@ class Canva:
         self.background = np.zeros((self.height, self.width, 3), dtype=np.uint8)
         self.data = []
 
-    def add_point(self,x,y,z):
-        self.frame[y-self.circle_size:y+self.circle_size,x-self.circle_size:x+self.circle_size,z] = 255
-        self.data.append((x,y,z))
+    def add_point(self,x,y, layer_bgr):
+        self.frame[self.circle(y),self.circle(x), layer_bgr] = 255
+
+        self.data.append((x,y, layer_bgr))
+
+    def circle(self,value):
+         return slice(value-self.circle_size, value+self.circle_size)
