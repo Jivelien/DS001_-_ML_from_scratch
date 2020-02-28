@@ -1,9 +1,8 @@
 from distance_matrix import DistanceMatrix
 from dataset import Dataset
-from point_2d import Point2D
 
 class KNN:
-    def __init__(self, k, dataset=None):
+    def __init__(self, k):
         self.k = k
         self.dataset = Dataset()
 

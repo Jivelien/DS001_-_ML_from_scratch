@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from canvas import Canvas
-from KNN import KNN
+from KNN_model import KNN
 from point_2d import Point2D
 
 WINDOWS_NAME: str = 'KNN demonstration'
@@ -9,7 +9,7 @@ WIDTH: int = 1000
 HEIGHT: int = 600
 
 c = Canvas(WIDTH, HEIGHT)
-model = KNN(k=3)
+model = KNN(k=5)
 
 def nothing(args):
     pass
@@ -56,8 +56,8 @@ def main():
         cv2.imshow(WINDOWS_NAME, (np.maximum(c.frame,c.background)))
         key_input = cv2.waitKey(1) & 0xFF
         main_loop = keyboardControl(key_input)
-        step = 10
-        for x in range(0, WIDTH, step):
+        step = 50
+        for x in range(step, WIDTH, step):
             for y in range(0, HEIGHT, step):
                 if c.point_counter != 0:
                     point = Point2D(x,y)
