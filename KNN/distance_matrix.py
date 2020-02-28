@@ -6,6 +6,9 @@ class DistanceMatrix:
         self.distances.append(self.distance_point(distance, label))
 
     def find_nearest_label(self, k):
+        if len(self.distances) == 0:
+            return []
+
         self.distances = sorted(self.distances,key=lambda d:d.distance, reverse=False)
         min = self.distances[0].distance
         result = []
