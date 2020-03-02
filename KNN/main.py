@@ -9,7 +9,7 @@ WIDTH: int = 1000
 HEIGHT: int = 600
 
 c = Canvas(WIDTH, HEIGHT)
-model = KNN(k=5)
+model = KNN(k=3)
 
 def nothing(args):
     pass
@@ -39,7 +39,8 @@ class Param:
         self.color=value
 
     def set_n_neighbour(self,value):
-        self.n_neighbour=value
+        self.n_neighbour = value
+        model.k = value
 
 
 def main():
@@ -56,7 +57,7 @@ def main():
         cv2.imshow(WINDOWS_NAME, (np.maximum(c.frame,c.background)))
         key_input = cv2.waitKey(1) & 0xFF
         main_loop = keyboardControl(key_input)
-        step = 50
+        step = 10
         for x in range(step, WIDTH, step):
             for y in range(0, HEIGHT, step):
                 if c.point_counter != 0:
