@@ -1,5 +1,6 @@
 from math import sqrt, pow
 
+
 class Point2D:
     def __init__(self, x, y, label=''):
         self.x = x

@@ -49,7 +49,7 @@ def main():
     cv2.namedWindow(WINDOWS_NAME)
 
     cv2.createTrackbar('color', WINDOWS_NAME, 0, 2, p.set_color)
-    cv2.createTrackbar('N', WINDOWS_NAME, 0, 20, p.set_n_neighbour)
+    cv2.createTrackbar('K', WINDOWS_NAME, 1, 20, p.set_n_neighbour)
     cv2.setMouseCallback(WINDOWS_NAME, mouseControl, p)
 
     main_loop = True
@@ -63,8 +63,8 @@ def main():
                 if c.point_counter != 0:
                     point = Point2D(x,y)
                     label = model.find_label_of_a_point(point)
-                    c.background[y-step:y+step,x-step:x+step,:] = 0
-                    c.background[y-step:y+step,x-step:x+step,label] = 50
+                    c.background[y-step:y+step, x-step:x+step, :] = 0
+                    c.background[y-step:y+step, x-step:x+step, label] = 50
 
 
 if __name__ == '__main__':
