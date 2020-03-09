@@ -31,7 +31,18 @@ class TestDistanceMatrix(unittest.TestCase):
 
         result = distance_matrix.find_nearest_label(k=1)
         expected = ['blue', 'red']
-        
+
+        self.assertEqual(sorted(expected), sorted(result))
+
+    def test_find_nearest_with_same_label(self):
+        distance_matrix = DistanceMatrix()
+
+        distance_matrix.add_distance(3.8, 'blue')
+        distance_matrix.add_distance(3.8, 'blue')
+
+        result = distance_matrix.find_nearest_label(k=1)
+        expected = ['blue']
+
         self.assertEqual(sorted(expected), sorted(result))
 
     @unittest.skip('until end of refacto')
