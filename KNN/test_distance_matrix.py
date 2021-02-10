@@ -1,6 +1,7 @@
 import unittest
 from distance_matrix import DistanceMatrix
 
+
 class TestDistanceMatrix(unittest.TestCase):
     def test_find_nearest_with_one_circle_point(self):
         distance_matrix = DistanceMatrix()

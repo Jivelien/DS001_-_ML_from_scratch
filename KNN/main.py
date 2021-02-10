@@ -18,6 +18,7 @@ def nothing(args):
 def mouseControl(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
         c.add_point(x,y,param.color)
+        print(f"x: {x} - y: {y}")
         model.dataset.add_point(Point2D(x,y,param.color))
     else:
         pass
@@ -58,6 +59,7 @@ def main():
         key_input = cv2.waitKey(1) & 0xFF
         main_loop = keyboardControl(key_input)
         step = 10
+        # print(model.k)
         for x in range(step, WIDTH, step):
             for y in range(0, HEIGHT, step):
                 if c.point_counter != 0:

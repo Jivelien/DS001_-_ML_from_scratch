@@ -20,12 +20,13 @@ class DistanceMatrix:
 
         sorted_distances = self._get_sorted_distance_matrix()
 
-        result_label = []
+        result_label = []  #[bleu, bleu, rouge]
         previous_distance = sorted_distances[0].distance
         for distance in sorted_distances:
             if previous_distance == distance.distance:
                 result_label.append(distance.label)
-        return result_label
+
+        return list(set(result_label))
         # while True:
         #     if sorted_distances[k-1].distance == sorted_distances[k].distance:
         #         k += 1
