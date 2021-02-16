@@ -46,7 +46,6 @@ class TestDistanceMatrix(unittest.TestCase):
 
         self.assertEqual(sorted(expected), sorted(result))
 
-    @unittest.skip('until end of refacto')
     def test_find_nearest_with_two_identical_labels(self):
         distance_matrix = DistanceMatrix()
 
@@ -59,7 +58,7 @@ class TestDistanceMatrix(unittest.TestCase):
         self.assertEqual(expected, result)
 
 
-    @unittest.skip('until end of refacto')
+    #@unittest.skip('until end of refacto')
     def test_find_most_present_label_between_three(self):
         distance_matrix = DistanceMatrix()
 
@@ -72,7 +71,7 @@ class TestDistanceMatrix(unittest.TestCase):
 
         self.assertEqual(expected, result)
 
-    @unittest.skip('until end of refacto')
+    #@unittest.skip('until end of refacto')
     def test_find_most_present_ambigous_labels_between_four(self):
         distance_matrix = DistanceMatrix()
 
@@ -86,7 +85,7 @@ class TestDistanceMatrix(unittest.TestCase):
 
         self.assertEqual(sorted(expected), sorted(result))
 
-    @unittest.skip('until end of refacto')
+    #@unittest.skip('until end of refacto')
     def test_return_only_the_minimal_necessary_point(self):
         distance_matrix = DistanceMatrix()
 
@@ -101,7 +100,7 @@ class TestDistanceMatrix(unittest.TestCase):
 
         self.assertEqual(sorted(expected), sorted(result))
 
-    @unittest.skip('until end of refacto')
+    #@unittest.skip('until end of refacto')
     def test_return_only_the_minimal_necessary_point2(self):
         distance_matrix = DistanceMatrix()
 

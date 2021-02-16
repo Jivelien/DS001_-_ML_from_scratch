@@ -1,3 +1,5 @@
+import collections
+
 class DistanceMatrix:
     def __init__(self):
         self.distance_matrix = []
@@ -20,13 +22,30 @@ class DistanceMatrix:
 
         sorted_distances = self._get_sorted_distance_matrix()
 
-        result_label = []  #[bleu, bleu, rouge]
+        result_labels = [] 
         previous_distance = sorted_distances[0].distance
-        for distance in sorted_distances:
-            if previous_distance == distance.distance:
-                result_label.append(distance.label)
+        
+        result_set = sorted_distances[0:min(k, len(sorted_distances))] 
+        last_distance = result_set[-1].distance
 
-        return list(set(result_label))
+        for distance in sorted_distances[min(k, len(sorted_distances)):]:
+            if last_distance == distance.distance:
+                result_set.append(distance)
+
+        result_labels = [ point.label for point in result_set]
+
+        labels_counter = collections.Counter(result_labels).most_common()
+
+        result = []
+        max_count_label = labels_counter[0][1]
+
+        for label in labels_counter:
+            if label[1] == max_count_label:
+                result.append(label[0])
+
+        #TODO Refactoré
+
+        return result
         # while True:
         #     if sorted_distances[k-1].distance == sorted_distances[k].distance:
         #         k += 1
