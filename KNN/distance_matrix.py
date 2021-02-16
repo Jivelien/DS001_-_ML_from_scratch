@@ -23,7 +23,6 @@ class DistanceMatrix:
         sorted_distances = self._get_sorted_distance_matrix()
 
         result_labels = [] 
-        previous_distance = sorted_distances[0].distance
         
         result_set = sorted_distances[0:min(k, len(sorted_distances))] 
         last_distance = result_set[-1].distance
