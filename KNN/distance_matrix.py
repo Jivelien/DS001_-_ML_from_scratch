@@ -1,11 +1,20 @@
 import collections
+from typing import Union, List
+from dataclasses import dataclass
+
+
 
 class DistanceMatrix:
+    @dataclass
+    class DistancePoint:
+        distance : float
+        label : Union[str,int]
+
     def __init__(self):
-        self.distance_matrix = []
+        self.distance_matrix : List[DistanceMatrix.DistancePoint]= []
 
     def add_distance(self, distance, label):
-        self.distance_matrix.append(self.distance_point(distance, label))
+        self.distance_matrix.append(self.DistancePoint(distance, label))
 
     def _is_matrix_empty(self):
         return len(self.distance_matrix) == 0
@@ -23,42 +32,29 @@ class DistanceMatrix:
     def keep_neighbour_egal_distance(self, distance, matrix):
         return [x for x in matrix if x.distance == distance]
 
-    def find_nearest_label_refact(self, k):
-        if self._is_matrix_empty():
-            return []
-
-        # K premier then other with egality
+    def select_k_nearest_neighbour(self, k):
         sorted_distances = self._get_sorted_distance_matrix()
         nearest_neighbour_subset = self.keep_k_nearest_neighbour(k, sorted_distances)
         max_distance_in_nn_subset = nearest_neighbour_subset[-1].distance
         additionnal_nearest_neighbour = self.keep_neighbour_egal_distance(max_distance_in_nn_subset, sorted_distances[min(k, len(sorted_distances)):])
         nearest_neighbour_subset += additionnal_nearest_neighbour
-        # end
+        return nearest_neighbour_subset
 
-        # TODO : try to refacto l30-36 with rank : [sorted(l).index(x) + 1 for x in l]  
 
-        result_labels = [ point.label for point in nearest_neighbour_subset]
-
-        labels_counter = collections.Counter(result_labels).most_common()
-
-        result = []
+    def elect_label_in_the_majority(self, labels):
+        labels_counter = collections.Counter(labels).most_common()
         max_count_label = labels_counter[0][1]
-
-        for label in labels_counter:
-            if label[1] == max_count_label:
-                result.append(label[0])
-
-        #TODO Refactoré
-
+        result = [ label[0] for label in labels_counter if label[1] == max_count_label ]
         return result
-        # while True:
-        #     if sorted_distances[k-1].distance == sorted_distances[k].distance:
-        #         k += 1
-        #     else:
-        #         break
-        # return [dist.label for dist in sorted_distances[k-1]]
 
 
+    def find_nearest_label_refact(self, k):
+        if self._is_matrix_empty():
+            return []
+        nearest_neighbour_subset = self.select_k_nearest_neighbour(k)
+        # TODO : try to refacto l30-36 with rank : [sorted(l).index(x) + 1 for x in l]  
+        result_labels = [ point.label for point in nearest_neighbour_subset]
+        return self.elect_label_in_the_majority(result_labels)
 
 
     def find_nearest_label_ori(self, k):
@@ -93,8 +89,3 @@ class DistanceMatrix:
                 break
 
         return final_result
-
-    class distance_point:
-        def __init__(self,distance,label):
-                self.distance = distance
-                self.label = label
