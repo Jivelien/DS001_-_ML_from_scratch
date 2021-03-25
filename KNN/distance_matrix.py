@@ -23,7 +23,7 @@ class DistanceMatrix:
         return sorted(self.distance_matrix, key=lambda d: d.distance, reverse=False)
 
     def find_nearest_label(self, k):
-         return self.find_nearest_label_refact(k)
+         return self.find_nearest_label_refact_by_ranking(k)
 
 
     def keep_k_nearest_neighbour(self, k, sorted_distance_matrix):
@@ -41,7 +41,7 @@ class DistanceMatrix:
         return nearest_neighbour_subset
 
 
-    def elect_label_in_the_majority(self, labels):
+    def select_label_in_the_majority(self, labels):
         labels_counter = collections.Counter(labels).most_common()
         max_count_label = labels_counter[0][1]
         result = [ label[0] for label in labels_counter if label[1] == max_count_label ]
@@ -52,9 +52,32 @@ class DistanceMatrix:
         if self._is_matrix_empty():
             return []
         nearest_neighbour_subset = self.select_k_nearest_neighbour(k)
-        # TODO : try to refacto l30-36 with rank : [sorted(l).index(x) + 1 for x in l]  
+        
+        # TODO : try to refacto with rank : [sorted(l).index(x) + 1 for x in l]  
+        
         result_labels = [ point.label for point in nearest_neighbour_subset]
-        return self.elect_label_in_the_majority(result_labels)
+        return self.select_label_in_the_majority(result_labels)
+
+
+    def find_nearest_label_refact_by_ranking(self, k):
+        if self._is_matrix_empty():
+            return []
+        result_labels = self.select_k_nearest_neighbour_by_ranking(k)
+        return self.select_label_in_the_majority(result_labels)
+
+
+    def select_k_nearest_neighbour_by_ranking(self, k):
+        #TODO work in progress: refactoring with ranking
+        sorted_distances = self._get_sorted_distance_matrix()
+        sorted_distances_without_label = [point.distance for point in sorted_distances]
+        rank_per_index = [sorted_distances_without_label.index(x) + 1 for x in sorted_distances_without_label] 
+
+        result_labels = []
+        for index in range(len(rank_per_index)):
+            if rank_per_index[index] <= k :
+                result_labels.append(sorted_distances[index].label)
+
+        return result_labels
 
 
     def find_nearest_label_ori(self, k):

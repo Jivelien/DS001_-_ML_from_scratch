@@ -115,5 +115,6 @@ class TestDistanceMatrix(unittest.TestCase):
 
         self.assertEqual(sorted(expected), sorted(result))
 
+
 if __name__ == '__main__':
     unittest.main()
