@@ -8,23 +8,20 @@ class DistanceMatrix:
     class DistancePoint:
         distance : float
         label : Union[str,int]
-    
-    @dataclass
-    class RankedLabel:
-        label : Union[str,int]
         rank : int
-
+    
     def __init__(self):
         self.distance_matrix : List[DistanceMatrix.DistancePoint]= []
 
     def add_distance(self, distance, label):
-        self.distance_matrix.append(self.DistancePoint(distance, label))
+        #TODO correct add_distance ; maybe rank at this moment ?
+        self.distance_matrix.append(self.DistancePoint(distance=distance, label=label, rank=-1))
 
     def _is_matrix_empty(self):
         return len(self.distance_matrix) == 0
 
     def _get_sorted_distance_matrix(self):
-        return sorted(self.distance_matrix, key=lambda d: d.distance, reverse=False)
+        self.distance_matrix = sorted(self.distance_matrix, key=lambda d: d.distance, reverse=False)
 
     def find_nearest_label(self, k):
          return self.find_nearest_label_refact_by_ranking(k)
@@ -71,25 +68,18 @@ class DistanceMatrix:
 
 
     def select_k_nearest_neighbour_by_ranking(self, k):
-        ranked_labels = self.rank_all_labels()
+        self.rank_all_labels()
+        return [self.distance_matrix.label for ranked_label in self.distance_matrix if self.distance_matrix.rank <= k ]
 
-        return [ranked_label.label for ranked_label in ranked_labels if ranked_label.rank <= k ]
 
+    def rank_all_labels(self) -> None:
+        self._get_sorted_distance_matrix()
 
-    def rank_all_labels(self) -> List[RankedLabel]:
-        #TODO dataset
-        sorted_distances = self._get_sorted_distance_matrix()
-
-        sorted_distances_without_label = [point.distance for point in sorted_distances]
+        sorted_distances_without_label = [point.distance for point in self.distance_matrix]
         rank_per_index = [sorted_distances_without_label.index(x) + 1 for x in sorted_distances_without_label] 
 
-        ranked_points = []
-        for index in range(len(rank_per_index)):
-                ranked_label = self.RankedLabel(rank = rank_per_index[index],
-                                                label = sorted_distances[index].label)
-                ranked_points.append( ranked_label )
-
-        return ranked_points
+        for index in range(len(self.distance_matrix)):
+                self.distance_matrix[index].rank = rank_per_index[index]
 
     def find_nearest_label_ori(self, k):
         if self._is_matrix_empty():
