@@ -3,12 +3,16 @@ from typing import Union, List
 from dataclasses import dataclass
 
 
-
 class DistanceMatrix:
     @dataclass
     class DistancePoint:
         distance : float
         label : Union[str,int]
+    
+    @dataclass
+    class RankedLabel:
+        label : Union[str,int]
+        rank : int
 
     def __init__(self):
         self.distance_matrix : List[DistanceMatrix.DistancePoint]= []
@@ -67,18 +71,25 @@ class DistanceMatrix:
 
 
     def select_k_nearest_neighbour_by_ranking(self, k):
-        #TODO work in progress: refactoring with ranking
+        ranked_labels = self.rank_all_labels()
+
+        return [ranked_label.label for ranked_label in ranked_labels if ranked_label.rank <= k ]
+
+
+    def rank_all_labels(self) -> List[RankedLabel]:
+        #TODO dataset
         sorted_distances = self._get_sorted_distance_matrix()
+
         sorted_distances_without_label = [point.distance for point in sorted_distances]
         rank_per_index = [sorted_distances_without_label.index(x) + 1 for x in sorted_distances_without_label] 
 
-        result_labels = []
+        ranked_points = []
         for index in range(len(rank_per_index)):
-            if rank_per_index[index] <= k :
-                result_labels.append(sorted_distances[index].label)
+                ranked_label = self.RankedLabel(rank = rank_per_index[index],
+                                                label = sorted_distances[index].label)
+                ranked_points.append( ranked_label )
 
-        return result_labels
-
+        return ranked_points
 
     def find_nearest_label_ori(self, k):
         if self._is_matrix_empty():

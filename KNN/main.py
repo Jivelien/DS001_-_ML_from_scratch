@@ -19,7 +19,7 @@ def mouseControl(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
         c.add_point(x,y,param.color)
         print(f"x: {x} - y: {y}")
-        model.dataset.add_point(Point2D(x,y,param.color))
+        model.add_point_to_dataset(Point2D(x,y,param.color))
     else:
         pass
 

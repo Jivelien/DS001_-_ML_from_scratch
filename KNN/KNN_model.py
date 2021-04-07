@@ -6,6 +6,9 @@ class KNN:
         self.k = k
         self.dataset = Dataset()
 
+    def add_point_to_dataset(self, point):
+        self.dataset.add_point(point)
+
     def find_label_of_a_point(self, point):
         distance_matrix = self._compute_distance_matrix(point)
         return distance_matrix.find_nearest_label(self.k)
