@@ -50,7 +50,7 @@ class DistanceMatrix:
 
     def select_k_nearest_neighbour_by_ranking(self, k):
         self.rank_all_labels()
-        return [self.distance_matrix.label for ranked_label in self.distance_matrix if self.distance_matrix.rank <= k ]
+        return [ranked_label.label for ranked_label in self.distance_matrix if ranked_label.rank <= k ]
 
 
     def rank_all_labels(self) -> None:
