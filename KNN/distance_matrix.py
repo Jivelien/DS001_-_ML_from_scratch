@@ -1,22 +1,23 @@
 import collections
 from typing import Union, List
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 class DistanceMatrix:
     @dataclass
     class DistancePoint:
         distance : float
-        label : Union[str,int]
-        rank : int
-    
+        label : Union[str,int] = field(compare = False)
+        rank : int  = field(compare = False, default = 0)
+
     def __init__(self):
         self.distance_matrix : List[DistanceMatrix.DistancePoint]= []
 
-    def add_distance(self, distance, label):
+
+    def add_distance(self, distance, label) -> None:
         self.distance_matrix.append(self.DistancePoint(distance=distance, label=label, rank=-1))
 
-    def _is_matrix_empty(self):
+    def _is_matrix_empty(self) -> bool:
         return len(self.distance_matrix) == 0
 
     def _get_sorted_distance_matrix(self):
@@ -49,8 +50,11 @@ class DistanceMatrix:
 
     def rank_all_labels(self) -> None:
         self._get_sorted_distance_matrix()
-        sorted_distances_without_label = [point.distance for point in self.distance_matrix]
-        rank_per_index = [sorted_distances_without_label.index(x) + 1 for x in sorted_distances_without_label] 
+
+        rank_per_index = [self.distance_matrix.index(x) + 1 for x in self.distance_matrix] 
 
         for index in range(len(self.distance_matrix)):
                 self.distance_matrix[index].rank = rank_per_index[index]
+
+    def index(self, value : DistancePoint) -> int:
+        return self.distance_matrix.index(value)

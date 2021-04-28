@@ -103,3 +103,4 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+KNN/collection_example_test.py
